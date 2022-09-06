@@ -5,7 +5,6 @@ const numeros = document.querySelectorAll('[id*=tecla]');
 const operadores = document.querySelectorAll('[id*=operador]');
 const operadorImaginario = document.getElementById('imaginario');
 
-
 let novoNumero = true;
 let operador;
 let numeroAnterior;
@@ -15,12 +14,12 @@ let primeiraExpressao;
 
 const operacaoPendente = () => operador != undefined;
 
-function definindoNumeroReal (expressaoNumerica) {
+function definirNumeroReal (expressaoNumerica) {
     const numeroReal = parseFloat(expressaoNumerica);
     return numeroReal;
 }
 
-function definindoNumeroImaginario (expressaoNumerica){
+function definirNumeroImaginario (expressaoNumerica){
     let numeroImaginario = expressaoNumerica.split('');
     let index = numeroImaginario.indexOf('+');
 
@@ -44,41 +43,45 @@ function definindoNumeroImaginario (expressaoNumerica){
 }
 
 const calcular = () => {
-    if (calculoComImaginario) {          
+    if (calculoComImaginario) {         
         const segundaExpressao = display.textContent.replace(',','.');
-        const primeiroNumeroReal = definindoNumeroReal(primeiraExpressao);
-        const primeiroNumeroImaginario = definindoNumeroImaginario(primeiraExpressao);
-        const segundoNumeroReal = definindoNumeroReal(segundaExpressao);
-        const segundoNumeroImaginario = definindoNumeroImaginario(segundaExpressao);
-        //console.log('primeira expressão', primeiroNumeroReal, primeiroNumeroImaginario);
-        //console.log(' segundo', segundoNumeroReal, segundoNumeroImaginario)
+        const primeiroNumeroReal = definirNumeroReal(primeiraExpressao);
+        const primeiroNumeroImaginario = definirNumeroImaginario(primeiraExpressao);
+        const segundoNumeroReal = definirNumeroReal(segundaExpressao);
+        const segundoNumeroImaginario = definirNumeroImaginario(segundaExpressao);
         let resultadoParcialParteReal;
         let resultadoParcialParteImaginaria;
         let resultado;
         switch (operador) {
             case "+":
                 resultadoParcialParteReal = primeiroNumeroReal + segundoNumeroReal;
-                //console.log('i', primeiroNumeroImaginario, segundoNumeroImaginario);
                 resultadoParcialParteImaginaria = primeiroNumeroImaginario + segundoNumeroImaginario;
-                if (Math.sign(resultadoParcialParteImaginaria) === 1){      //colocando sinal positivo no número imaginário
-                    resultadoParcialParteImaginaria = `+${resultadoParcialParteImaginaria}`;
-                    //console.log(resultadoParcialParteImaginaria, 'verificando pontuação');
-                }
-                resultado = `${resultadoParcialParteReal}${resultadoParcialParteImaginaria}i`;
-                //console.log(resultado)
                 break;
             case "-":
-                //console.log("operação -");
                 resultadoParcialParteReal = primeiroNumeroReal - segundoNumeroReal;
-                //console.log('i', primeiroNumeroImaginario, segundoNumeroImaginario);
                 resultadoParcialParteImaginaria = primeiroNumeroImaginario - segundoNumeroImaginario;
-                resultado = `${resultadoParcialParteReal} ${resultadoParcialParteImaginaria}i`;
-                //console.log(resultado);
                 break;
-                
+            case "*":
+                resultadoParcialParteReal = (primeiroNumeroReal * segundoNumeroReal) - (primeiroNumeroImaginario * segundoNumeroImaginario);
+                resultadoParcialParteImaginaria = (primeiroNumeroReal * segundoNumeroImaginario) + (primeiroNumeroImaginario * segundoNumeroReal);
+                break;
+            case "/":
+                const numeradorParteReal = (primeiroNumeroReal * segundoNumeroReal) + (primeiroNumeroImaginario * segundoNumeroImaginario);
+                const denominadorAmbasAsPartes = Math.pow(segundoNumeroReal,2) + Math.pow(segundoNumeroImaginario,2);
+                console.log(denominadorAmbasAsPartes, "potencia real");
+                const numeradorParteImaginaria = ((primeiroNumeroReal * (-1)) * segundoNumeroImaginario) + (primeiroNumeroImaginario * primeiroNumeroReal);
 
+                resultadoParcialParteReal = numeradorParteReal / denominadorAmbasAsPartes;
+                resultadoParcialParteImaginaria = numeradorParteImaginaria / denominadorAmbasAsPartes;
+                break;               
         }
+        if (Math.sign(resultadoParcialParteImaginaria) === 1){      //colocando sinal positivo no número imaginário
+            resultadoParcialParteImaginaria = `+${resultadoParcialParteImaginaria}`;
+        }
+        resultado = `${resultadoParcialParteReal}${resultadoParcialParteImaginaria}i`;
         atualizarDisplay(resultado);
+        novoNumero: true;
+        
 
     } else if (operacaoPendente()) {
         const numeroAtual = parseFloat(display.textContent.replace(',','.'));
