@@ -10,7 +10,7 @@ body{
 }
 
 .calculator {
-    width: 80%;
+    width: 50%;
     height: 90%;
     margin: 0 auto;
     background-color: #12d48d;
@@ -63,4 +63,23 @@ button:hover{
 button:active{
     background-color: #f4d9a8;
     color: black;
+}
+
+@media(max-width: 780px){
+    .calculator {
+        width: 70%;
+        height: 90%;
+    }
+}
+
+@media (max-width: 560px){
+    .calculator button{
+        padding: 8px;
+    }
+
+
+    .calculator {
+        width: 90%;
+
+    }
 }
