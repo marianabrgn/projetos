@@ -6,11 +6,12 @@
 
 body{
     background-color: whitesmoke;
-    padding: 20px 0;
+    padding: 10px 0;
 }
 
 .calculator {
-    width: 400px;
+    width: 80%;
+    height: 90%;
     margin: 0 auto;
     background-color: #12d48d;
     padding: 20px;
@@ -46,7 +47,7 @@ body{
 .calculator button{
     background-color: rgb(103, 90, 90);
     color: white;
-    padding: 20px;
+    padding: 15px;
     border-radius: 5px;
     font-size: 1.5rem;
     outline: none;
