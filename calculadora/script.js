@@ -3,13 +3,13 @@
 const display = document.getElementById('display');
 const numeros = document.querySelectorAll('[id*=tecla]');
 const operadores = document.querySelectorAll('[id*=operador]');
-const operadorImaginario = document.getElementById('imaginario');
+const operadorImaginario = document.getElementById('operacaoComNumeroComplexo');
 
 let novoNumero = true;
 let operador;
 let numeroAnterior;
-let calculoComImaginario = false;
-let expressaoSalva = false; // Recebe true quando a primeira expressão de uma operação com números imaginários é salva em uma variável
+let calculoNumeroComplexo = false;
+let expressaoSalva = false; // Recebe true quando a primeira expressão de uma operação com números Complexos é salva em uma variável
 let primeiraExpressao;
 
 const operacaoPendente = () => operador != undefined;
@@ -43,7 +43,7 @@ function definirNumeroImaginario (expressaoNumerica){
 }
 
 const calcular = () => {
-    if (calculoComImaginario) {         
+    if (calculoNumeroComplexo) {         
         const segundaExpressao = display.textContent.replace(',','.');
         const primeiroNumeroReal = definirNumeroReal(primeiraExpressao);
         const primeiroNumeroImaginario = definirNumeroImaginario(primeiraExpressao);
@@ -109,7 +109,7 @@ const atualizarDisplay = (texto) => {
     }
 }
 
-function armazenaPrimeiraExpressaoComImaginario(){
+function armazenarPrimeiraExpressaoNumeroComplexo(){
     if(!expressaoSalva && primeiraExpressao === undefined) {
         primeiraExpressao = display.textContent.replace(',','.');
         expressaoSalva = true;
@@ -118,7 +118,7 @@ function armazenaPrimeiraExpressaoComImaginario(){
 
 const mostrarIconeImaginario = (evento) => {
     atualizarDisplay(evento.target.textContent);
-    armazenaPrimeiraExpressaoComImaginario();
+    armazenarPrimeiraExpressaoNumeroComplexo();
     novoNumero = true;
 }
 
@@ -127,17 +127,16 @@ const inserirNumero = (evento) => atualizarDisplay(evento.target.textContent);
 numeros.forEach(numero => numero.addEventListener("click", inserirNumero));
 
 const selecionarOperador = (evento) => {
-    if (!novoNumero && calculoComImaginario === false) {
+    if (!novoNumero && !calculoNumeroComplexo) {
         calcular();
         novoNumero = true;
         operador = evento.target.textContent;
         numeroAnterior = parseFloat(display.textContent.replace(',','.'));
-    } else if (!novoNumero && calculoComImaginario === true) {
+    } else if (calculoNumeroComplexo) { //!novoNumero &&
         if(!expressaoSalva) {
             atualizarDisplay(evento.target.textContent);
         }
         expressaoSalva = false;
-    } else {
         operador = evento.target.textContent;
     }
 }
@@ -166,8 +165,10 @@ const removerUltimoNumero = () => {
 document.getElementById('backspace').addEventListener('click', removerUltimoNumero);
 
 const inverterSinal = () => {
-    novoNumero = true;
-    atualizarDisplay(display.textContent * -1);
+    if(!calculoNumeroComplexo) {
+        novoNumero = true;
+        atualizarDisplay(display.textContent * -1);
+    }
 }
 document.getElementById('inverter').addEventListener('click', inverterSinal);
 
@@ -216,6 +217,6 @@ const mapearTeclado = (evento) => {
 document.addEventListener('keydown', mapearTeclado);
 
 operadorImaginario.addEventListener("click", function (){
-    calculoComImaginario  = true; 
+    calculoNumeroComplexo  = true; 
 });
 
