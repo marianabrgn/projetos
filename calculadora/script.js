@@ -12,8 +12,6 @@ let calculoNumeroComplexo = false;
 let expressaoSalva = false; // Recebe true quando a primeira expressão de uma operação com números Complexos é salva em uma variável
 let primeiraExpressao;
 
-const operacaoPendente = () => operador != undefined;
-
 function definirNumeroReal (expressaoNumerica) {
     const numeroReal = parseFloat(expressaoNumerica);
     return numeroReal;
@@ -87,11 +85,13 @@ const calcular = () => {
         if (resultadoParcialParteImaginaria === "0i") {
             resultadoParcialParteImaginaria = "";
         }
-
         resultado = `${resultadoParcialParteReal}${resultadoParcialParteImaginaria}`;
         primeiraExpressao = undefined;
-
-    } else if (operacaoPendente()) {
+        atualizarDisplay(resultado);
+        operador = undefined;
+        armazenarPrimeiraExpressaoNumeroComplexo();
+        novoNumero = true;
+    } else if (operador != undefined) {
         const numeroAtual = parseFloat(display.textContent.replace(',','.'));
         if (operador === '+'){
             resultado = numeroAnterior + numeroAtual;
@@ -102,10 +102,18 @@ const calcular = () => {
         } else if (operador === '/'){
             resultado = numeroAnterior / numeroAtual;
         }
-    
+        atualizarDisplay(resultado);     
     }
-    atualizarDisplay(resultado);
 }
+
+const verificarNumeroPendente = () => {
+    if(!calculoNumeroComplexo && operador === undefined){
+        novoNumero = true;
+    }else if(operador === undefined) {
+        primeiraExpressao = undefined;
+        expressaoSalva = false;
+    }
+} 
 
 const atualizarDisplay = (texto) => {
     if (novoNumero){
@@ -130,7 +138,10 @@ const mostrarIconeImaginario = (evento) => {
 }
 
 document.getElementById('iconeImaginario').addEventListener('click', mostrarIconeImaginario);
-const inserirNumero = (evento) => atualizarDisplay(evento.target.textContent);
+const inserirNumero = (evento) => {
+    verificarNumeroPendente();
+    atualizarDisplay(evento.target.textContent);
+}
 numeros.forEach(numero => numero.addEventListener("click", inserirNumero));
 
 const selecionarOperador = (evento) => {
