@@ -11,6 +11,7 @@ let numeroAnterior;
 let calculoNumeroComplexo = false;
 let expressaoSalva = false; // Recebe true quando a primeira expressão de uma operação com números Complexos é salva em uma variável
 let primeiraExpressao;
+let verificaCalculoRealizado = false;
 
 function definirNumeroReal (expressaoNumerica) {
     const numeroReal = parseFloat(expressaoNumerica);
@@ -102,13 +103,15 @@ const calcular = () => {
         } else if (operador === '/'){
             resultado = numeroAnterior / numeroAtual;
         }
-        atualizarDisplay(resultado);     
+        atualizarDisplay(resultado);
+        verificaCalculoRealizado = true;
     }
 }
 
 const verificarNumeroPendente = () => {
-    if(!calculoNumeroComplexo && operador === undefined){
+    if(!calculoNumeroComplexo && operador === undefined && verificaCalculoRealizado){
         novoNumero = true;
+        verificaCalculoRealizado = false;
     }else if(operador === undefined) {
         primeiraExpressao = undefined;
         expressaoSalva = false;
