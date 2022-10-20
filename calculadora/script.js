@@ -68,8 +68,7 @@ const calcular = () => {
             case "/":
                 const numeradorParteReal = (primeiroNumeroReal * segundoNumeroReal) + (primeiroNumeroImaginario * segundoNumeroImaginario);
                 const denominadorAmbasAsPartes = Math.pow(segundoNumeroReal,2) + Math.pow(segundoNumeroImaginario,2);
-                console.log(denominadorAmbasAsPartes, "potencia real");
-                const numeradorParteImaginaria = ((primeiroNumeroReal * (-1)) * segundoNumeroImaginario) + (primeiroNumeroImaginario * primeiroNumeroReal);
+                const numeradorParteImaginaria = ((primeiroNumeroReal * (-1)) * segundoNumeroImaginario) + (primeiroNumeroImaginario * segundoNumeroReal);
 
                 resultadoParcialParteReal = numeradorParteReal / denominadorAmbasAsPartes;
                 resultadoParcialParteImaginaria = numeradorParteImaginaria / denominadorAmbasAsPartes;
@@ -178,6 +177,7 @@ const limparCalculo = () => {
     novoNumero = true;
     numeroAnterior = undefined;
     calculoNumeroComplexo = false;
+    numeroComplexo.classList.remove("numero-complexo");
 }
 document.getElementById('limparCalculo').addEventListener('click', limparCalculo);
 
@@ -239,6 +239,7 @@ const mapearTeclado = (evento) => {
 document.addEventListener('keydown', mapearTeclado);
 
 numeroComplexo.addEventListener("click", function (){
-    calculoNumeroComplexo  = true; 
+    calculoNumeroComplexo  = true;
+    numeroComplexo.classList.add("numero-complexo");
 });
 

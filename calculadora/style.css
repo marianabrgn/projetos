@@ -65,6 +65,11 @@ button:active{
     color: black;
 }
 
+.numero-complexo{
+    background-color: #f4d9a8 !important;
+    color: black !important;
+}
+
 @media(max-width: 780px){
     .calculator {
         width: 70%;
